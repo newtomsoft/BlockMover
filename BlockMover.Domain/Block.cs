@@ -19,6 +19,22 @@ public record Block
         _grid.AddBlock(this);
     }
 
+    public Block(int length, Orientation orientation, Coordinate coordinate)
+    {
+        Length = length;
+        Orientation = orientation;
+        Coordinate = coordinate;
+    }
+
+    public Block(Block block, int id)
+    {
+        Id = id;
+        Length = block.Length;
+        Orientation = block.Orientation;
+        Coordinate = block.Coordinate;
+    }
+
+
     public bool CanMove(Direction direction) =>
         direction switch
         {
@@ -27,13 +43,20 @@ public record Block
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
 
-    public bool Move(Direction direction) =>
-        direction switch
+    public void Move(Direction direction)
+    {
+        switch (direction)
         {
-            Direction.Decrease => Decrease(),
-            Direction.Increase => Increase(),
-            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
-        };
+            case Direction.Decrease:
+                Decrease();
+                break;
+            case Direction.Increase:
+                Increase();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+        }
+    }
 
     public bool CanIncrease()
     {
@@ -73,48 +96,21 @@ public record Block
         return true;
     }
 
-    public bool Increase()
-    {
-        switch (Orientation)
+    public void Increase() =>
+        Coordinate = Orientation switch
         {
-            case Orientation.Horizontal:
-                if (Coordinate.X + Length >= _grid.Size.X) return false;
-                if (_grid.Blocks.Any(block => block.HasCoordinate(Coordinate.From(Coordinate.X + Length, Coordinate.Y)))) return false;
-                Coordinate = Coordinate with { X = Coordinate.X + 1 };
-                break;
-            case Orientation.Vertical:
-                if (Coordinate.Y + Length >= _grid.Size.Y) return false;
-                if (_grid.Blocks.Any(block => block.HasCoordinate(Coordinate.From(Coordinate.X, Coordinate.Y + Length)))) return false;
-                Coordinate = Coordinate with { Y = Coordinate.Y + 1 };
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
+            Orientation.Horizontal => Coordinate with {X = Coordinate.X + 1},
+            Orientation.Vertical => Coordinate with {Y = Coordinate.Y + 1},
+            _ => throw new ArgumentOutOfRangeException()
+        };
 
-        return true;
-
-    }
-
-    public bool Decrease()
-    {
-        switch (Orientation)
+    public void Decrease() =>
+        Coordinate = Orientation switch
         {
-            case Orientation.Horizontal:
-                if (Coordinate.X == 0) return false;
-                if (_grid.Blocks.Any(block => block.HasCoordinate(Coordinate.From(Coordinate.X - 1, Coordinate.Y)))) return false;
-                Coordinate = Coordinate with { X = Coordinate.X - 1 };
-                break;
-            case Orientation.Vertical:
-                if (Coordinate.Y == 0) return false;
-                if (_grid.Blocks.Any(block => block.HasCoordinate(Coordinate.From(Coordinate.X, Coordinate.Y - 1)))) return false;
-                Coordinate = Coordinate with { Y = Coordinate.Y - 1 };
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-
-        return true;
-    }
+            Orientation.Horizontal => Coordinate with {X = Coordinate.X - 1},
+            Orientation.Vertical => Coordinate with {Y = Coordinate.Y - 1},
+            _ => throw new ArgumentOutOfRangeException()
+        };
 
     public bool HasReachedExit() => HasCoordinate(_grid.ExitCoordinate);
 

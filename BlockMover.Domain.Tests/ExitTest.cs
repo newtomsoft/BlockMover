@@ -1,7 +1,4 @@
-﻿using Shouldly;
-using Xunit;
-
-namespace BlockMover.Domain.Tests;
+﻿namespace BlockMover.Domain.Tests;
 
 public class ExitTest
 {

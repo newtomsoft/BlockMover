@@ -22,7 +22,21 @@ public record Grid
 
     }
 
-    public static Grid Empty() => new(new GridSize(0, 0), Coordinate.From(0, 0));
+    public Grid(GridSize size, IEnumerable<Block> blocks)
+    {
+        Size = size;
+        Blocks = new List<Block>();
+        ExitCoordinate = new Coordinate(-1, -1);
+        if (Size == GridSize.Null) return;
+        var arrayBlocks = blocks.ToArray();
+        for (var i = 0; i < arrayBlocks.Length; i++)
+        {
+            var currentBlock = new Block(arrayBlocks[i], i);
+            Blocks.Add(currentBlock);
+        }
+    }
+
+
     public bool IsEmpty() => Size == new GridSize(0, 0);
 
     public void AddBlock(Block block) => Blocks.Add(block);
@@ -35,6 +49,7 @@ public record Grid
         blocks[blockIndex].Move(direction);
         return grid;
     }
+
 
     public bool IsIn(List<Grid> allGrids)
     {
@@ -52,4 +67,6 @@ public record Grid
 
         return false;
     }
+
+    private static Grid Empty() => new(new GridSize(0, 0), Coordinate.From(0, 0));
 }

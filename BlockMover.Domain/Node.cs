@@ -1,15 +1,14 @@
-﻿using System.Diagnostics;
-using System.Text;
+﻿using System.Text;
 
 namespace BlockMover.Domain;
 
 public class Node
 {
-    public Grid Grid { get; set; }
-    public Dictionary<List<Move>, Node> Children { get; set; }
-    public Move FromMove { get; }
-    public List<Move> Moves { get; }
-    public Node? Parent { get; }
+    private Grid Grid { get; }
+    private Dictionary<List<Move>, Node> Children { get; }
+    private Move FromMove { get; }
+    private List<Move> Moves { get; }
+    private Node? Parent { get; }
 
     public Node(Grid grid)
     {
@@ -23,7 +22,7 @@ public class Node
         Parent = parent;
         Grid = grid;
         FromMove = fromMove;
-        Moves = new List<Move>(parent.Moves) {fromMove};
+        Moves = new List<Move>(parent.Moves) { fromMove };
         Children = new Dictionary<List<Move>, Node>();
     }
 
@@ -85,8 +84,8 @@ public class Node
                     node.Children.Add(child.Key, child.Value);
                     newNodes.Add(child.Value);
                 }
-                var keyValuePair = children.FirstOrDefault(c => c.Value.HasBlockExit());
-                if (keyValuePair.Value is not null) return keyValuePair.Value;
+                var childrenHavingBlockOnExit = children.FirstOrDefault(c => c.Value.HasBlockExit());
+                if (childrenHavingBlockOnExit.Value is not null) return childrenHavingBlockOnExit.Value;
 
             }
             if (newNodes.Count == 0) break;
@@ -96,7 +95,7 @@ public class Node
         return null;
     }
 
-    public string GetWayToExit()
+    public string GetStringWayToExit()
     {
         var exitNode = ComputeChildren();
         if (exitNode is null) return "No way";

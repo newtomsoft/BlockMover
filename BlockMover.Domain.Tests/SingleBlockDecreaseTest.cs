@@ -1,6 +1,3 @@
-using Shouldly;
-using Xunit;
-
 namespace BlockMover.Domain.Tests;
 
 public class SingleBlockDecreaseTest
@@ -10,7 +7,8 @@ public class SingleBlockDecreaseTest
     {
         var grid = new Grid(new GridSize(3, 3), Coordinate.From(2, 2));
         var block = new Block(0, 2, Orientation.Horizontal, Coordinate.From(1, 0), grid);
-        block.Decrease().ShouldBeTrue();
+        block.CanDecrease().ShouldBeTrue();
+        block.Decrease();
         block.Coordinate.ShouldBeEquivalentTo(Coordinate.From(0, 0));
     }
 
@@ -19,8 +17,7 @@ public class SingleBlockDecreaseTest
     {
         var grid = new Grid(new GridSize(3, 3), Coordinate.From(2, 2));
         var block = new Block(0, 2, Orientation.Horizontal, Coordinate.From(0, 0), grid);
-        block.Decrease().ShouldBeFalse();
-        block.Coordinate.ShouldBeEquivalentTo(Coordinate.From(0, 0));
+        block.CanDecrease().ShouldBeFalse();
     }
 
     [Fact]
@@ -28,7 +25,8 @@ public class SingleBlockDecreaseTest
     {
         var grid = new Grid(new GridSize(3, 3), Coordinate.From(2, 2));
         var block = new Block(0, 2, Orientation.Vertical, Coordinate.From(0, 1), grid);
-        block.Decrease().ShouldBeTrue();
+        block.CanDecrease().ShouldBeTrue();
+        block.Decrease();
         block.Coordinate.ShouldBeEquivalentTo(Coordinate.From(0, 0));
     }
 
@@ -37,7 +35,6 @@ public class SingleBlockDecreaseTest
     {
         var grid = new Grid(new GridSize(3, 3), Coordinate.From(2, 2));
         var block = new Block(0, 2, Orientation.Horizontal, Coordinate.From(0, 0), grid);
-        block.Decrease().ShouldBeFalse();
-        block.Coordinate.ShouldBeEquivalentTo(Coordinate.From(0, 0));
+        block.CanDecrease().ShouldBeFalse();
     }
 }

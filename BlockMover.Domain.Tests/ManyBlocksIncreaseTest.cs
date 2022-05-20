@@ -1,6 +1,3 @@
-using Shouldly;
-using Xunit;
-
 namespace BlockMover.Domain.Tests;
 
 public class ManyBlocksIncreaseTest
@@ -11,7 +8,7 @@ public class ManyBlocksIncreaseTest
         var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2));
         var block0 = new Block(0, 2, Orientation.Horizontal, Coordinate.From(0, 0), grid);
         var block1 = new Block(0, 2, Orientation.Vertical, Coordinate.From(3, 0), grid);
-        block0.Increase().ShouldBeTrue();
+        block0.CanIncrease().ShouldBeTrue();
     }
 
     [Fact]
@@ -20,7 +17,7 @@ public class ManyBlocksIncreaseTest
         var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2));
         var block0 = new Block(0, 2, Orientation.Horizontal, Coordinate.From(1, 0), grid);
         var block1 = new Block(0, 2, Orientation.Vertical, Coordinate.From(3, 0), grid);
-        block0.Increase().ShouldBeFalse();
+        block0.CanIncrease().ShouldBeFalse();
     }
 
     [Fact]
@@ -29,7 +26,7 @@ public class ManyBlocksIncreaseTest
         var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2));
         var block0 = new Block(0, 2, Orientation.Vertical, Coordinate.From(0, 0), grid);
         var block1 = new Block(0, 2, Orientation.Horizontal, Coordinate.From(0, 3), grid);
-        block0.Increase().ShouldBeTrue();
+        block0.CanIncrease().ShouldBeTrue();
     }
 
     [Fact]
@@ -38,7 +35,7 @@ public class ManyBlocksIncreaseTest
         var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2));
         var block0 = new Block(0, 2, Orientation.Vertical, Coordinate.From(0, 1), grid);
         var block1 = new Block(0, 2, Orientation.Horizontal, Coordinate.From(0, 3), grid);
-        block0.Increase().ShouldBeFalse();
+        block0.CanIncrease().ShouldBeFalse();
     }
 
     [Fact]
@@ -47,7 +44,7 @@ public class ManyBlocksIncreaseTest
         var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2));
         var block0 = new Block(0, 2, Orientation.Horizontal, Coordinate.From(2, 0), grid);
         var block1 = new Block(0, 2, Orientation.Vertical, Coordinate.From(0, 0), grid);
-        block0.Decrease().ShouldBeTrue();
+        block0.CanDecrease().ShouldBeTrue();
     }
 
     [Fact]
@@ -56,7 +53,7 @@ public class ManyBlocksIncreaseTest
         var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2));
         var block0 = new Block(0, 2, Orientation.Horizontal, Coordinate.From(1, 0), grid);
         var block1 = new Block(0, 2, Orientation.Vertical, Coordinate.From(0, 0), grid);
-        block0.Decrease().ShouldBeFalse();
+        block0.CanDecrease().ShouldBeFalse();
     }
 
     [Fact]
@@ -65,7 +62,7 @@ public class ManyBlocksIncreaseTest
         var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2));
         var block0 = new Block(0, 2, Orientation.Vertical, Coordinate.From(0, 2), grid);
         var block1 = new Block(0, 2, Orientation.Horizontal, Coordinate.From(0, 0), grid);
-        block0.Decrease().ShouldBeTrue();
+        block0.CanDecrease().ShouldBeTrue();
     }
 
     [Fact]
@@ -74,6 +71,6 @@ public class ManyBlocksIncreaseTest
         var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2));
         var block0 = new Block(0, 2, Orientation.Vertical, Coordinate.From(0, 1), grid);
         var block1 = new Block(0, 2, Orientation.Horizontal, Coordinate.From(0, 0), grid);
-        block0.Decrease().ShouldBeFalse();
+        block0.CanDecrease().ShouldBeFalse();
     }
 }
