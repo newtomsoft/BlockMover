@@ -34,7 +34,7 @@ public class SingleBlockDecreaseTest
     public void DecreaseVerticallyShouldReturnFalse()
     {
         var grid = new Grid(new GridSize(3, 3), Coordinate.From(2, 2));
-        var block = new Block(0, 2, Orientation.Horizontal, Coordinate.From(0, 0), grid);
+        var block = new Block(0, 2, Orientation.Vertical, Coordinate.From(0, 0), grid);
         block.CanDecrease().ShouldBeFalse();
     }
 }

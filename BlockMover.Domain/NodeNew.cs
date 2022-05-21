@@ -2,33 +2,33 @@
 
 namespace BlockMover.Domain;
 
-public class Node
+public class NodeNew
 {
-    private Grid Grid { get; }
-    private Dictionary<List<Move>, Node> Children { get; }
+    private GridNew Grid { get; }
+    private Dictionary<List<Move>, NodeNew> Children { get; }
     private Move FromMove { get; }
     private List<Move> Moves { get; }
-    private Node? Parent { get; }
+    private NodeNew? Parent { get; }
 
-    public Node(Grid grid)
+    public NodeNew(GridNew grid)
     {
         Grid = grid;
-        Children = new Dictionary<List<Move>, Node>();
+        Children = new Dictionary<List<Move>, NodeNew>();
         Moves = new List<Move>();
     }
 
-    private Node(Node parent, Grid grid, Move fromMove)
+    private NodeNew(NodeNew parent, GridNew grid, Move fromMove)
     {
         Parent = parent;
         Grid = grid;
         FromMove = fromMove;
         Moves = new List<Move>(parent.Moves) { fromMove };
-        Children = new Dictionary<List<Move>, Node>();
+        Children = new Dictionary<List<Move>, NodeNew>();
     }
 
-    private static Dictionary<List<Move>, Node> ComputeChildren(Node node)
+    private static Dictionary<List<Move>, NodeNew> ComputeChildren(NodeNew node)
     {
-        var children = new Dictionary<List<Move>, Node>();
+        var children = new Dictionary<List<Move>, NodeNew>();
         for (var blockIndex = 0; blockIndex < node.Grid.Blocks.Count; blockIndex++)
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
@@ -39,7 +39,7 @@ public class Node
                 {
                     var newGrid = parentNode.Grid.MoveBlock(blockIndex, direction);
                     if (newGrid.IsEmpty()) break;
-                    var childNode = new Node(parentNode, newGrid, new Move(blockIndex, direction));
+                    var childNode = new NodeNew(parentNode, newGrid, new Move(blockIndex, direction));
                     var listMove = new List<Move>(parentNode.Moves) { new(blockIndex, direction) };
                     children.TryAdd(listMove, childNode);
                     parentNode = childNode;
@@ -49,11 +49,11 @@ public class Node
         return children;
     }
 
-    private Node? ComputeChildren()
+    private NodeNew? ComputeChildren()
     {
-        var nodes = new List<Node> { this };
-        var newNodes = new List<Node>();
-        var allFoundGrids = new List<Grid> { Grid };
+        var nodes = new List<NodeNew> { this };
+        var newNodes = new List<NodeNew>();
+        var allFoundGrids = new List<GridNew> { Grid };
         while (true)
         {
             newNodes.Clear();
@@ -71,7 +71,7 @@ public class Node
 
             }
             if (newNodes.Count == 0) break;
-            nodes = new List<Node>(newNodes);
+            nodes = new List<NodeNew>(newNodes);
         }
 
         return null;
@@ -104,7 +104,7 @@ public class Node
         return stringBuilder.ToString();
     }
 
-    private bool HasBlockExit() => Grid.Blocks[0].HasReachedExit();
+    private bool HasBlockExit() => Grid.Blocks[0].HasCoordinate(Grid.ExitCoordinate);
 
     private static Direction Opposite(Direction direction) =>
         direction switch
