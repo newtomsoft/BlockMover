@@ -43,6 +43,49 @@ public class EscapeBlockKing
     }
 
     [Fact]
+    public void TestHard010()
+    {
+        var grid = new Grid(new GridSize(6, 6), Coordinate.From(5, 2));
+        _ = new Block(0, 2, Orientation.Horizontal, Coordinate.From(2, 2), grid);
+        _ = new Block(1, 2, Orientation.Horizontal, Coordinate.From(4, 0), grid);
+        _ = new Block(2, 2, Orientation.Horizontal, Coordinate.From(0, 3), grid);
+        _ = new Block(3, 2, Orientation.Horizontal, Coordinate.From(3, 4), grid);
+        _ = new Block(4, 2, Orientation.Horizontal, Coordinate.From(1, 5), grid);
+        _ = new Block(5, 2, Orientation.Vertical, Coordinate.From(0, 1), grid);
+        _ = new Block(6, 2, Orientation.Vertical, Coordinate.From(0, 4), grid);
+        _ = new Block(7, 3, Orientation.Vertical, Coordinate.From(1, 0), grid);
+        _ = new Block(8, 2, Orientation.Vertical, Coordinate.From(2, 3), grid);
+        _ = new Block(9, 2, Orientation.Vertical, Coordinate.From(3, 0), grid);
+        _ = new Block(10, 3, Orientation.Vertical, Coordinate.From(4, 1), grid);
+        _ = new Block(11, 2, Orientation.Vertical, Coordinate.From(5, 4), grid);
+
+        var node = new Node(grid);
+        node.GetStringWayToExit().ShouldBe("b4++ b5- b8+ b2++ b7+++ b0-- b9+ b1-- b10- b2+ b8--- b2- b3- b4- b10+++ b1++ b8- b9- b0++++");
+    }
+
+
+    [Fact]
+    public void TestHard020()
+    {
+        var grid = new Grid(new GridSize(6, 6), Coordinate.From(5, 2));
+        _ = new Block(0, 2, Orientation.Horizontal, Coordinate.From(3, 2), grid);
+        _ = new Block(1, 3, Orientation.Horizontal, Coordinate.From(0, 0), grid);
+        _ = new Block(2, 2, Orientation.Horizontal, Coordinate.From(4, 1), grid);
+        _ = new Block(3, 2, Orientation.Horizontal, Coordinate.From(1, 3), grid);
+        _ = new Block(4, 2, Orientation.Horizontal, Coordinate.From(1, 4), grid);
+        _ = new Block(5, 2, Orientation.Horizontal, Coordinate.From(4, 4), grid);
+        _ = new Block(6, 3, Orientation.Horizontal, Coordinate.From(1, 5), grid);
+        _ = new Block(7, 3, Orientation.Vertical, Coordinate.From(0, 1), grid);
+        _ = new Block(8, 2, Orientation.Vertical, Coordinate.From(0, 4), grid);
+        _ = new Block(9, 2, Orientation.Vertical, Coordinate.From(3, 0), grid);
+        _ = new Block(10, 2, Orientation.Vertical, Coordinate.From(3, 3), grid);
+        _ = new Block(11, 2, Orientation.Vertical, Coordinate.From(5, 2), grid);
+
+        var node = new Node(grid);
+        node.GetStringWayToExit().ShouldBe("b0-- b9+ b1+ b7- b8- b6- b10+ b9+ b2--- b9- b10- b6+ b8+ b7+ b1- b9- b11-- b0+++");
+    }
+
+    [Fact]
     public void TestPro607()
     {
         var grid = new Grid(new GridSize(6, 6), Coordinate.From(5, 2));
