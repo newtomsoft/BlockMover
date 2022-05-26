@@ -49,7 +49,7 @@ public class SingleBlockMoveTest
         block.Move(Direction.Increase);
         block.Coordinate.ShouldBe(Coordinate.From(1, 0));
     }
-    
+
     [Fact]
     public void IncreaseHorizontallyShouldReturnFalse()
     {

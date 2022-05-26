@@ -87,7 +87,7 @@ public class ResolveTest
         var node = new Node(grid);
         node.GetStringWayToExit().ShouldBe("b2++ b3- b4- b1++ b0++");
     }
-    
+
     [Fact]
     public void Test6In5By5()
     {
@@ -141,7 +141,7 @@ public class ResolveTest
         var node = new Node(grid);
         node.GetStringWayToExit().ShouldBe("b1+ b3-- b4--- b5- b6++ b0++++");
     }
-    
+
     [Fact]
     public void Test6In6By6()
     {
