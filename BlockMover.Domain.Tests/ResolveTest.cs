@@ -18,7 +18,6 @@ public class ResolveTest
         var gridAfterB2Increase = grid.MoveBlock(2, Direction.Increase);
         gridAfterB2Increase.Blocks[0].ShouldBe(grid.Blocks[0]);
         gridAfterB2Increase.Blocks[1].ShouldBe(grid.Blocks[1]);
-        gridAfterB2Increase.Blocks[2].Id.ShouldBe(grid.Blocks[2].Id);
         gridAfterB2Increase.Blocks[2].Orientation.ShouldBe(grid.Blocks[2].Orientation);
         gridAfterB2Increase.Blocks[2].Length.ShouldBe(grid.Blocks[2].Length);
         gridAfterB2Increase.Blocks[2].Coordinate.ShouldBe(Coordinate.From(2, 2));
@@ -26,7 +25,6 @@ public class ResolveTest
         var gridAfterB2Decrease = grid.MoveBlock(2, Direction.Decrease);
         gridAfterB2Decrease.Blocks[0].ShouldBe(grid.Blocks[0]);
         gridAfterB2Decrease.Blocks[1].ShouldBe(grid.Blocks[1]);
-        gridAfterB2Decrease.Blocks[2].Id.ShouldBe(grid.Blocks[2].Id);
         gridAfterB2Decrease.Blocks[2].Orientation.ShouldBe(grid.Blocks[2].Orientation);
         gridAfterB2Decrease.Blocks[2].Length.ShouldBe(grid.Blocks[2].Length);
         gridAfterB2Decrease.Blocks[2].Coordinate.ShouldBe(Coordinate.From(0, 2));

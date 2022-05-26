@@ -2,16 +2,9 @@
 
 public record Block(int Length, Orientation Orientation, Coordinate Coordinate)
 {
-    public int Id { get; }
     public Coordinate Coordinate { get; private set; } = Coordinate;
     public Coordinate MaxCoordinate => Orientation == Orientation.Horizontal ? Coordinate.From(Coordinate.X + Length - 1, Coordinate.Y) : Coordinate.From(Coordinate.X, Coordinate.Y + Length - 1);
- 
-
-    public Block(Block block, int id) : this(block.Length, block.Orientation, block.Coordinate)
-    {
-        Id = id;
-    }
-
+    
     public void Move(Direction direction)
     {
         switch (direction)

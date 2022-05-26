@@ -17,12 +17,11 @@ public record Grid
         if (_size == GridSize.Null && arrayBlocks.Any()) throw new ArgumentException("size can't be (0,0)");
         if (_size == GridSize.Null) return;
 
-        for (var i = 0; i < arrayBlocks.Length; i++)
+        foreach (var block in arrayBlocks)
         {
-            var currentBlock = new Block(arrayBlocks[i], i);
-            if (currentBlock.MaxCoordinate.X >= _size.X) throw new ArgumentException("block must be inside grid");
-            if (currentBlock.MaxCoordinate.Y >= _size.Y) throw new ArgumentException("block must be inside grid");
-            Blocks.Add(currentBlock);
+            if (block.MaxCoordinate.X >= _size.X) throw new ArgumentException("block must be inside grid");
+            if (block.MaxCoordinate.Y >= _size.Y) throw new ArgumentException("block must be inside grid");
+            Blocks.Add(block);
         }
         if (exitCoordinate.X < 0) throw new ArgumentOutOfRangeException(nameof(size));
         if (exitCoordinate.Y < 0) throw new ArgumentOutOfRangeException(nameof(size));
@@ -40,12 +39,11 @@ public record Grid
         if (arrayBlocks.Length == 0) throw new ArgumentException("blocks can't be empty");
         if (_size == GridSize.Null) throw new ArgumentException("size can't be (0,0)");
 
-        for (var i = 0; i < arrayBlocks.Length; i++)
+        foreach (var block in arrayBlocks)
         {
-            var currentBlock = new Block(arrayBlocks[i], i);
-            if (currentBlock.MaxCoordinate.X >= _size.X) throw new ArgumentException("block must be inside grid");
-            if (currentBlock.MaxCoordinate.Y >= _size.Y) throw new ArgumentException("block must be inside grid");
-            Blocks.Add(currentBlock);
+            if (block.MaxCoordinate.X >= _size.X) throw new ArgumentException("block must be inside grid");
+            if (block.MaxCoordinate.Y >= _size.Y) throw new ArgumentException("block must be inside grid");
+            Blocks.Add(block);
         }
 
         ExitCoordinate = BlockToEscape.Orientation == Orientation.Horizontal ? Coordinate.From(_size.X - 1, BlockToEscape.Coordinate.Y) : Coordinate.From(BlockToEscape.Coordinate.X, _size.Y - 1);
