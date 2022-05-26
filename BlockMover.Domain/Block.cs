@@ -7,17 +7,6 @@ public record Block
     public Orientation Orientation { get; }
     public Coordinate Coordinate { get; private set; }
 
-    private readonly Grid _grid;
-
-    public Block(int id, int length, Orientation orientation, Coordinate coordinate, Grid grid)
-    {
-        Id = id;
-        Length = length;
-        Orientation = orientation;
-        Coordinate = coordinate;
-        _grid = grid;
-        _grid.AddBlock(this);
-    }
 
     public Block(int length, Orientation orientation, Coordinate coordinate)
     {
@@ -34,88 +23,33 @@ public record Block
         Coordinate = block.Coordinate;
     }
 
-
-    public bool CanMove(Direction direction) =>
-        direction switch
-        {
-            Direction.Decrease => CanDecrease(),
-            Direction.Increase => CanIncrease(),
-            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
-        };
-
     public void Move(Direction direction)
     {
         switch (direction)
         {
-            case Direction.Decrease:
-                Decrease();
-                break;
-            case Direction.Increase:
-                Increase();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
+            case Direction.Decrease: Decrease(); break;
+            case Direction.Increase: Increase(); break;
+            default: throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
     }
 
-    public bool CanIncrease()
-    {
-        switch (Orientation)
-        {
-            case Orientation.Horizontal:
-                if (Coordinate.X + Length >= _grid.Size.X) return false;
-                if (_grid.Blocks.Any(block => block.HasCoordinate(Coordinate.From(Coordinate.X + Length, Coordinate.Y)))) return false;
-                break;
-            case Orientation.Vertical:
-                if (Coordinate.Y + Length >= _grid.Size.Y) return false;
-                if (_grid.Blocks.Any(block => block.HasCoordinate(Coordinate.From(Coordinate.X, Coordinate.Y + Length)))) return false;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-
-        return true;
-    }
-
-    public bool CanDecrease()
-    {
-        switch (Orientation)
-        {
-            case Orientation.Horizontal:
-                if (Coordinate.X == 0) return false;
-                if (_grid.Blocks.Any(block => block.HasCoordinate(Coordinate.From(Coordinate.X - 1, Coordinate.Y)))) return false;
-                break;
-            case Orientation.Vertical:
-                if (Coordinate.Y == 0) return false;
-                if (_grid.Blocks.Any(block => block.HasCoordinate(Coordinate.From(Coordinate.X, Coordinate.Y - 1)))) return false;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
-        }
-
-        return true;
-    }
-
-    public void Increase() =>
+    private void Increase() =>
         Coordinate = Orientation switch
         {
-            Orientation.Horizontal => Coordinate with {X = Coordinate.X + 1},
-            Orientation.Vertical => Coordinate with {Y = Coordinate.Y + 1},
+            Orientation.Horizontal => Coordinate with { X = Coordinate.X + 1 },
+            Orientation.Vertical => Coordinate with { Y = Coordinate.Y + 1 },
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    public void Decrease() =>
+    private void Decrease() =>
         Coordinate = Orientation switch
         {
-            Orientation.Horizontal => Coordinate with {X = Coordinate.X - 1},
-            Orientation.Vertical => Coordinate with {Y = Coordinate.Y - 1},
+            Orientation.Horizontal => Coordinate with { X = Coordinate.X - 1 },
+            Orientation.Vertical => Coordinate with { Y = Coordinate.Y - 1 },
             _ => throw new ArgumentOutOfRangeException()
         };
 
-    public bool HasReachedExit() => HasCoordinate(_grid.ExitCoordinate);
-
-
-    private bool HasCoordinate(Coordinate coordinate) => AllCoordinates().Contains(coordinate);
+    public bool HasCoordinate(Coordinate coordinate) => AllCoordinates().Contains(coordinate);
 
     private List<Coordinate> AllCoordinates()
     {

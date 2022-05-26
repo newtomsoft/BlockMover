@@ -104,7 +104,7 @@ public class Node
         return stringBuilder.ToString();
     }
 
-    private bool HasBlockExit() => Grid.Blocks[0].HasReachedExit();
+    private bool HasBlockExit() => Grid.Blocks[0].HasCoordinate(Grid.ExitCoordinate);
 
     private static Direction Opposite(Direction direction) =>
         direction switch

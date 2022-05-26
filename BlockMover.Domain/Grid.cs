@@ -2,53 +2,108 @@
 
 public record Grid
 {
-    public GridSize Size { get; }
-
     public List<Block> Blocks { get; }
 
     public Coordinate ExitCoordinate { get; }
 
+    private readonly GridSize _size;
+
     public Grid(GridSize size, Coordinate exitCoordinate)
     {
-        Size = size;
+        _size = size;
         Blocks = new List<Block>();
         ExitCoordinate = exitCoordinate;
-        if (Size == GridSize.Null) return;
+        if (_size == GridSize.Null) return;
         if (exitCoordinate.X < 0) throw new ArgumentOutOfRangeException(nameof(size));
         if (exitCoordinate.Y < 0) throw new ArgumentOutOfRangeException(nameof(size));
-        if (exitCoordinate.X >= Size.X) throw new ArgumentOutOfRangeException(nameof(size));
-        if (exitCoordinate.Y >= Size.Y) throw new ArgumentOutOfRangeException(nameof(size));
-        if (exitCoordinate.X != 0 && exitCoordinate.X != Size.X - 1 && exitCoordinate.Y != 0 && exitCoordinate.Y != Size.Y - 1) throw new ArgumentOutOfRangeException(nameof(size));
+        if (exitCoordinate.X >= _size.X) throw new ArgumentOutOfRangeException(nameof(size));
+        if (exitCoordinate.Y >= _size.Y) throw new ArgumentOutOfRangeException(nameof(size));
+        if (exitCoordinate.X != 0 && exitCoordinate.X != _size.X - 1 && exitCoordinate.Y != 0 && exitCoordinate.Y != _size.Y - 1) throw new ArgumentOutOfRangeException(nameof(size));
 
     }
 
-    public Grid(GridSize size, IEnumerable<Block> blocks)
+    public Grid(GridSize size, Coordinate exitCoordinate, IEnumerable<Block> blocks)
     {
-        Size = size;
+        _size = size;
         Blocks = new List<Block>();
-        ExitCoordinate = new Coordinate(-1, -1);
-        if (Size == GridSize.Null) return;
+        if (_size == GridSize.Null) return;
         var arrayBlocks = blocks.ToArray();
         for (var i = 0; i < arrayBlocks.Length; i++)
         {
             var currentBlock = new Block(arrayBlocks[i], i);
             Blocks.Add(currentBlock);
         }
+        ExitCoordinate = exitCoordinate;
+        if (exitCoordinate.X < 0) throw new ArgumentOutOfRangeException(nameof(size));
+        if (exitCoordinate.Y < 0) throw new ArgumentOutOfRangeException(nameof(size));
+        if (exitCoordinate.X >= _size.X) throw new ArgumentOutOfRangeException(nameof(size));
+        if (exitCoordinate.Y >= _size.Y) throw new ArgumentOutOfRangeException(nameof(size));
+        if (exitCoordinate.X != 0 && exitCoordinate.X != _size.X - 1 && exitCoordinate.Y != 0 && exitCoordinate.Y != _size.Y - 1) throw new ArgumentOutOfRangeException(nameof(size));
+
     }
 
+    public bool CanBlockMove(int blockIndex, Direction direction) =>
+        direction switch
+        {
+            Direction.Decrease => CanBlockDecrease(blockIndex),
+            Direction.Increase => CanBlockIncrease(blockIndex),
+            _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
+        };
 
-    public bool IsEmpty() => Size == new GridSize(0, 0);
+    private bool CanBlockIncrease(int blockIndex)
+    {
+        var blockToTest = Blocks[blockIndex];
+        switch (blockToTest.Orientation)
+        {
+            case Orientation.Horizontal:
+                if (blockToTest.Coordinate.X + blockToTest.Length >= _size.X) return false;
+                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.Coordinate.X + blockToTest.Length, blockToTest.Coordinate.Y)))) return false;
+                break;
+            case Orientation.Vertical:
+                if (blockToTest.Coordinate.Y + blockToTest.Length >= _size.Y) return false;
+                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.Coordinate.X, blockToTest.Coordinate.Y + blockToTest.Length)))) return false;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        return true;
+    }
+
+    private bool CanBlockDecrease(int blockIndex)
+    {
+        var blockToTest = Blocks[blockIndex];
+        switch (blockToTest.Orientation)
+        {
+            case Orientation.Horizontal:
+                if (blockToTest.Coordinate.X == 0) return false;
+                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.Coordinate.X - 1, blockToTest.Coordinate.Y)))) return false;
+                break;
+            case Orientation.Vertical:
+                if (blockToTest.Coordinate.Y == 0) return false;
+                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.Coordinate.X, blockToTest.Coordinate.Y - 1)))) return false;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
+        return true;
+    }
+
+    public bool IsEmpty() => _size == new GridSize(0, 0);
 
     public void AddBlock(Block block) => Blocks.Add(block);
 
     public Grid MoveBlock(int blockIndex, Direction direction)
     {
-        if (Blocks[blockIndex].CanMove(direction) is false) return Empty();
-        var grid = new Grid(Size, ExitCoordinate);
-        var blocks = Blocks.Select(block => new Block(block.Id, block.Length, block.Orientation, block.Coordinate, grid)).ToList();
-        blocks[blockIndex].Move(direction);
+        if (CanBlockMove(blockIndex, direction) is false) return Empty();
+        var blocks = Blocks.Select(block => new Block(block.Length, block.Orientation, block.Coordinate)).ToList();
+        var grid = new Grid(_size, ExitCoordinate, blocks);
+        grid.Blocks[blockIndex].Move(direction);
         return grid;
     }
+
+    public bool HasReachedExit() => Blocks[0].HasCoordinate(ExitCoordinate);
 
 
     public bool IsIn(List<Grid> allGrids)
@@ -56,6 +111,7 @@ public record Grid
         foreach (var grid in allGrids)
         {
             var isIn = true;
+            // ReSharper disable once LoopCanBeConvertedToQuery because this version approximately 2x faster than Linq
             for (var i = 0; i < grid.Blocks.Count; i++)
             {
                 if (grid.Blocks[i].Coordinate == Blocks[i].Coordinate) continue;
@@ -67,6 +123,8 @@ public record Grid
 
         return false;
     }
+
+    public bool IsInLinq(IEnumerable<Grid> allGrids) => allGrids.Select(grid => !grid.Blocks.Where((t, i) => t.Coordinate != Blocks[i].Coordinate).Any()).Any(isIn => isIn);
 
     private static Grid Empty() => new(new GridSize(0, 0), Coordinate.From(0, 0));
 }

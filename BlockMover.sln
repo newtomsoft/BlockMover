@@ -12,11 +12,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlockMover.Domain.Tests", "
 		{5FF07812-D595-4356-B41F-61C7E2081327} = {5FF07812-D595-4356-B41F-61C7E2081327}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockMover.Resolve.Test", "BlockMover.Resolve.Test\BlockMover.Resolve.Test.csproj", "{C32181E2-18F6-4C2C-8087-15373B95C0F9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlockMover.Resolve.Test", "BlockMover.Resolve.Test\BlockMover.Resolve.Test.csproj", "{C32181E2-18F6-4C2C-8087-15373B95C0F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockMover.JsonReader", "BlockMover.JsonReader\BlockMover.JsonReader.csproj", "{05608841-0AAD-4F4A-A68C-5D260CB4200A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlockMover.JsonReader", "BlockMover.JsonReader\BlockMover.JsonReader.csproj", "{05608841-0AAD-4F4A-A68C-5D260CB4200A}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B915AF8B-1AA5-496F-9D32-DDD487761FB5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{093B664B-FDF4-4D7E-AEF8-4AFA0927F43E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,7 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{CFCA4AD9-59BD-4EB9-90D2-B3C801F42896} = {093B664B-FDF4-4D7E-AEF8-4AFA0927F43E}
 		{328F981D-F92D-4B40-987B-B2526DC96B52} = {B915AF8B-1AA5-496F-9D32-DDD487761FB5}
 		{C32181E2-18F6-4C2C-8087-15373B95C0F9} = {B915AF8B-1AA5-496F-9D32-DDD487761FB5}
 	EndGlobalSection
