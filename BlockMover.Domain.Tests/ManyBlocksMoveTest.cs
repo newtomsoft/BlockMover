@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace BlockMover.Domain.Tests;
 
 public class ManyBlocksMoveTest

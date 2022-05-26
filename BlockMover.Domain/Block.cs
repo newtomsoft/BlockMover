@@ -1,26 +1,15 @@
 ﻿namespace BlockMover.Domain;
 
-public record Block
+public record Block(int Length, Orientation Orientation, Coordinate Coordinate)
 {
     public int Id { get; }
-    public int Length { get; }
-    public Orientation Orientation { get; }
-    public Coordinate Coordinate { get; private set; }
+    public Coordinate Coordinate { get; private set; } = Coordinate;
+    public Coordinate MaxCoordinate => Orientation == Orientation.Horizontal ? Coordinate.From(Coordinate.X + Length - 1, Coordinate.Y) : Coordinate.From(Coordinate.X, Coordinate.Y + Length - 1);
+ 
 
-
-    public Block(int length, Orientation orientation, Coordinate coordinate)
-    {
-        Length = length;
-        Orientation = orientation;
-        Coordinate = coordinate;
-    }
-
-    public Block(Block block, int id)
+    public Block(Block block, int id) : this(block.Length, block.Orientation, block.Coordinate)
     {
         Id = id;
-        Length = block.Length;
-        Orientation = block.Orientation;
-        Coordinate = block.Coordinate;
     }
 
     public void Move(Direction direction)
@@ -32,6 +21,8 @@ public record Block
             default: throw new ArgumentOutOfRangeException(nameof(direction), direction, null);
         }
     }
+
+    public bool HasCoordinate(Coordinate coordinate) => AllCoordinates().Contains(coordinate);
 
     private void Increase() =>
         Coordinate = Orientation switch
@@ -48,8 +39,6 @@ public record Block
             Orientation.Vertical => Coordinate with { Y = Coordinate.Y - 1 },
             _ => throw new ArgumentOutOfRangeException()
         };
-
-    public bool HasCoordinate(Coordinate coordinate) => AllCoordinates().Contains(coordinate);
 
     private List<Coordinate> AllCoordinates()
     {

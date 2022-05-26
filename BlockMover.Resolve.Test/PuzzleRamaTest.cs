@@ -15,7 +15,7 @@ public class PuzzleRamaTest
             new(2, Orientation.Vertical, Coordinate.From(4, 1)),
             new(2, Orientation.Vertical, Coordinate.From(1, 3)),
         };
-        var grid = new Grid(new GridSize(5, 5), Coordinate.From(4, 2), blocks);
+        var grid = new Grid(new GridSize(5, 5), blocks);
 
         var node = new Node(grid);
         node.GetStringWayToExit().ShouldBe("b1- b4- b5++ b0+++");

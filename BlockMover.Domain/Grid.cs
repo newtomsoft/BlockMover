@@ -3,17 +3,27 @@
 public record Grid
 {
     public List<Block> Blocks { get; }
-
     public Coordinate ExitCoordinate { get; }
 
     private readonly GridSize _size;
+    private Block BlockToEscape => Blocks[0];
 
-    public Grid(GridSize size, Coordinate exitCoordinate)
+    public Grid(GridSize size, Coordinate exitCoordinate, IEnumerable<Block> blocks)
     {
         _size = size;
         Blocks = new List<Block>();
         ExitCoordinate = exitCoordinate;
+        var arrayBlocks = blocks.ToArray();
+        if (_size == GridSize.Null && arrayBlocks.Any()) throw new ArgumentException("size can't be (0,0)");
         if (_size == GridSize.Null) return;
+
+        for (var i = 0; i < arrayBlocks.Length; i++)
+        {
+            var currentBlock = new Block(arrayBlocks[i], i);
+            if (currentBlock.MaxCoordinate.X >= _size.X) throw new ArgumentException("block must be inside grid");
+            if (currentBlock.MaxCoordinate.Y >= _size.Y) throw new ArgumentException("block must be inside grid");
+            Blocks.Add(currentBlock);
+        }
         if (exitCoordinate.X < 0) throw new ArgumentOutOfRangeException(nameof(size));
         if (exitCoordinate.Y < 0) throw new ArgumentOutOfRangeException(nameof(size));
         if (exitCoordinate.X >= _size.X) throw new ArgumentOutOfRangeException(nameof(size));
@@ -22,24 +32,23 @@ public record Grid
 
     }
 
-    public Grid(GridSize size, Coordinate exitCoordinate, IEnumerable<Block> blocks)
+    public Grid(GridSize size, IEnumerable<Block> blocks)
     {
         _size = size;
         Blocks = new List<Block>();
-        if (_size == GridSize.Null) return;
         var arrayBlocks = blocks.ToArray();
+        if (arrayBlocks.Length == 0) throw new ArgumentException("blocks can't be empty");
+        if (_size == GridSize.Null) throw new ArgumentException("size can't be (0,0)");
+
         for (var i = 0; i < arrayBlocks.Length; i++)
         {
             var currentBlock = new Block(arrayBlocks[i], i);
+            if (currentBlock.MaxCoordinate.X >= _size.X) throw new ArgumentException("block must be inside grid");
+            if (currentBlock.MaxCoordinate.Y >= _size.Y) throw new ArgumentException("block must be inside grid");
             Blocks.Add(currentBlock);
         }
-        ExitCoordinate = exitCoordinate;
-        if (exitCoordinate.X < 0) throw new ArgumentOutOfRangeException(nameof(size));
-        if (exitCoordinate.Y < 0) throw new ArgumentOutOfRangeException(nameof(size));
-        if (exitCoordinate.X >= _size.X) throw new ArgumentOutOfRangeException(nameof(size));
-        if (exitCoordinate.Y >= _size.Y) throw new ArgumentOutOfRangeException(nameof(size));
-        if (exitCoordinate.X != 0 && exitCoordinate.X != _size.X - 1 && exitCoordinate.Y != 0 && exitCoordinate.Y != _size.Y - 1) throw new ArgumentOutOfRangeException(nameof(size));
 
+        ExitCoordinate = BlockToEscape.Orientation == Orientation.Horizontal ? Coordinate.From(_size.X - 1, BlockToEscape.Coordinate.Y) : Coordinate.From(BlockToEscape.Coordinate.X, _size.Y - 1);
     }
 
     public bool CanBlockMove(int blockIndex, Direction direction) =>
@@ -126,5 +135,5 @@ public record Grid
 
     public bool IsInLinq(IEnumerable<Grid> allGrids) => allGrids.Select(grid => !grid.Blocks.Where((t, i) => t.Coordinate != Blocks[i].Coordinate).Any()).Any(isIn => isIn);
 
-    private static Grid Empty() => new(new GridSize(0, 0), Coordinate.From(0, 0));
+    private static Grid Empty() => new(new GridSize(0, 0), Coordinate.From(0, 0), new List<Block>());
 }

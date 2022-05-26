@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace BlockMover.Domain.Tests;
+﻿namespace BlockMover.Domain.Tests;
 public class ResolveTest
 {
     [Fact]
@@ -37,9 +35,9 @@ public class ResolveTest
     [Fact]
     public void TestNoExit2In3By3()
     {
-        var block0 = new Block(2, Orientation.Vertical, Coordinate.From(0, 0));
-        var block1 = new Block(2, Orientation.Vertical, Coordinate.From(2, 1));
-        var grid = new Grid(new GridSize(3, 3), Coordinate.From(2, 0), new List<Block> { block0, block1 });
+        var block0 = new Block(2, Orientation.Horizontal, Coordinate.From(0, 1));
+        var block1 = new Block(3, Orientation.Vertical, Coordinate.From(2, 0));
+        var grid = new Grid(new GridSize(3, 3), new List<Block> { block0, block1 });
 
         var node = new Node(grid);
         node.GetStringWayToExit().ShouldBe("No way");
@@ -54,7 +52,7 @@ public class ResolveTest
             new(2, Orientation.Vertical, Coordinate.From(2, 0)),
             new(2, Orientation.Horizontal, Coordinate.From(1, 2)),
         };
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 1), blocks);
+        var grid = new Grid(new GridSize(4, 4), blocks);
         new Node(grid).GetStringWayToExit().ShouldBe("b2- b1++ b0++");
     }
 
@@ -68,7 +66,7 @@ public class ResolveTest
             new(2, Orientation.Horizontal, Coordinate.From(1, 2)),
             new(2, Orientation.Horizontal, Coordinate.From(2, 3)),
         };
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 1), blocks);
+        var grid = new Grid(new GridSize(4, 4), blocks);
         new Node(grid).GetStringWayToExit().ShouldBe("b2- b3-- b1++ b0++");
     }
 
@@ -83,7 +81,7 @@ public class ResolveTest
             new (2, Orientation.Horizontal, Coordinate.From(1, 2)),
             new (2, Orientation.Horizontal, Coordinate.From(1, 3)),
         };
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 1), blocks);
+        var grid = new Grid(new GridSize(4, 4), blocks);
         var node = new Node(grid);
         node.GetStringWayToExit().ShouldBe("b2++ b3- b4- b1++ b0++");
     }
@@ -100,7 +98,7 @@ public class ResolveTest
             new(2, Orientation.Vertical, Coordinate.From(2, 2)),
             new(2, Orientation.Vertical, Coordinate.From(4, 1)),
         };
-        var grid = new Grid(new GridSize(5, 5), Coordinate.From(4, 2), blocks);
+        var grid = new Grid(new GridSize(5, 5), blocks);
         var node = new Node(grid);
         node.GetStringWayToExit().ShouldBe("b1-- b4-- b5++ b0+++");
     }
@@ -119,7 +117,7 @@ public class ResolveTest
             new(2, Orientation.Vertical, Coordinate.From(1, 2)),
             new(2, Orientation.Vertical, Coordinate.From(4, 2)),
         };
-        var grid = new Grid(new GridSize(5, 5), Coordinate.From(4, 2), blocks);
+        var grid = new Grid(new GridSize(5, 5), blocks);
         var node = new Node(grid);
         node.GetStringWayToExit().ShouldBe("b1- b2- b7+ b0+");
     }
@@ -137,7 +135,7 @@ public class ResolveTest
             new(2, Orientation.Vertical, Coordinate.From(2, 1)),
             new(3, Orientation.Vertical, Coordinate.From(3, 1)),
         };
-        var grid = new Grid(new GridSize(6, 6), Coordinate.From(5, 2), blocks);
+        var grid = new Grid(new GridSize(6, 6), blocks);
         var node = new Node(grid);
         node.GetStringWayToExit().ShouldBe("b1+ b3-- b4--- b5- b6++ b0++++");
     }
@@ -154,7 +152,7 @@ public class ResolveTest
             new(2, Orientation.Vertical, Coordinate.From(2, 2)),
             new(2, Orientation.Vertical, Coordinate.From(2, 4)),
         };
-        var grid = new Grid(new GridSize(6, 6), Coordinate.From(5, 2), blocks);
+        var grid = new Grid(new GridSize(6, 6), blocks);
         var node = new Node(grid);
         node.GetStringWayToExit().ShouldBe("b2+++ b3+++ b1++ b4-- b0++++");
     }
