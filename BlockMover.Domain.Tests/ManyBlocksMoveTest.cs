@@ -7,7 +7,7 @@ public class ManyBlocksMoveTest
     {
         var block0 = new Block(2, Orientation.Horizontal, Coordinate.From(0, 0));
         var block1 = new Block(2, Orientation.Vertical, Coordinate.From(3, 0));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0, block1 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0, block1 });
         grid.CanBlockMove(0, Direction.Increase).ShouldBeTrue();
     }
 
@@ -16,7 +16,7 @@ public class ManyBlocksMoveTest
     {
         var block0 = new Block(2, Orientation.Horizontal, Coordinate.From(1, 0));
         var block1 = new Block(2, Orientation.Vertical, Coordinate.From(3, 0));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0, block1 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0, block1 });
         grid.CanBlockMove(0, Direction.Increase).ShouldBeFalse();
     }
 
@@ -25,7 +25,7 @@ public class ManyBlocksMoveTest
     {
         var block0 = new Block(2, Orientation.Vertical, Coordinate.From(0, 0));
         var block1 = new Block(2, Orientation.Horizontal, Coordinate.From(0, 3));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0, block1 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0, block1 });
         grid.CanBlockMove(0, Direction.Increase).ShouldBeTrue();
     }
 
@@ -34,7 +34,7 @@ public class ManyBlocksMoveTest
     {
         var block0 = new Block(2, Orientation.Vertical, Coordinate.From(0, 1));
         var block1 = new Block(2, Orientation.Horizontal, Coordinate.From(0, 3));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0, block1 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0, block1 });
         grid.CanBlockMove(0, Direction.Increase).ShouldBeFalse();
     }
 
@@ -43,7 +43,7 @@ public class ManyBlocksMoveTest
     {
         var block0 = new Block(2, Orientation.Horizontal, Coordinate.From(2, 0));
         var block1 = new Block(2, Orientation.Vertical, Coordinate.From(0, 0));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0, block1 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0, block1 });
         grid.CanBlockMove(0, Direction.Decrease).ShouldBeTrue();
     }
 
@@ -52,7 +52,7 @@ public class ManyBlocksMoveTest
     {
         var block0 = new Block(2, Orientation.Horizontal, Coordinate.From(1, 0));
         var block1 = new Block(2, Orientation.Vertical, Coordinate.From(0, 0));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0, block1 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0, block1 });
         grid.CanBlockMove(0, Direction.Decrease).ShouldBeFalse();
     }
 
@@ -61,7 +61,7 @@ public class ManyBlocksMoveTest
     {
         var block0 = new Block(2, Orientation.Vertical, Coordinate.From(0, 2));
         var block1 = new Block(2, Orientation.Horizontal, Coordinate.From(0, 0));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0, block1 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0, block1 });
         grid.CanBlockMove(0, Direction.Decrease).ShouldBeTrue();
     }
 
@@ -70,7 +70,7 @@ public class ManyBlocksMoveTest
     {
         var block0 = new Block(2, Orientation.Vertical, Coordinate.From(0, 1));
         var block1 = new Block(2, Orientation.Horizontal, Coordinate.From(0, 0));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0, block1 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0, block1 });
         grid.CanBlockMove(0, Direction.Decrease).ShouldBeFalse();
     }
 }

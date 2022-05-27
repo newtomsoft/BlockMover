@@ -6,7 +6,7 @@ public class ExitTest
     public void ExitReached()
     {
         var block0 = new Block(2, Orientation.Horizontal, Coordinate.From(2, 2));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0 });
         grid.HasReachedExit().ShouldBeTrue();
     }
 
@@ -14,7 +14,7 @@ public class ExitTest
     public void ExitNotReached()
     {
         var block0 = new Block(2, Orientation.Horizontal, Coordinate.From(1, 2));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0 });
         grid.HasReachedExit().ShouldBeFalse();
     }
 
@@ -22,7 +22,7 @@ public class ExitTest
     public void ExitReachedAfterMove()
     {
         var block0 = new Block(2, Orientation.Horizontal, Coordinate.From(1, 2));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 2), new List<Block> { block0 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0 });
         grid.Blocks[0].Move(Direction.Increase);
         grid.HasReachedExit().ShouldBeTrue();
     }

@@ -7,7 +7,7 @@ public class ResolveTest
         var block0 = new Block(2, Orientation.Horizontal, Coordinate.From(0, 1));
         var block1 = new Block(2, Orientation.Vertical, Coordinate.From(2, 0));
         var block2 = new Block(2, Orientation.Horizontal, Coordinate.From(1, 2));
-        var grid = new Grid(new GridSize(4, 4), Coordinate.From(3, 1), new List<Block> { block0, block1, block2 });
+        var grid = new Grid(new GridSize(4, 4), new List<Block> { block0, block1, block2 });
 
         grid.MoveBlock(0, Direction.Increase).IsEmpty().ShouldBeTrue();
         grid.MoveBlock(0, Direction.Decrease).IsEmpty().ShouldBeTrue();

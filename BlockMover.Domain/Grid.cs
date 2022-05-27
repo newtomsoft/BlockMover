@@ -3,9 +3,9 @@
 public record Grid
 {
     public List<Block> Blocks { get; }
-    public Coordinate ExitCoordinate { get; }
+    public Coordinate ExitCoordinate { get; set; }
 
-    private readonly GridSize _size;
+    private GridSize _size;
     private Block BlockToEscape => Blocks[0];
 
     public Grid(GridSize size, Coordinate exitCoordinate, IEnumerable<Block> blocks)
@@ -17,12 +17,8 @@ public record Grid
         if (_size == GridSize.Null && arrayBlocks.Any()) throw new ArgumentException("size can't be (0,0)");
         if (_size == GridSize.Null) return;
 
-        foreach (var block in arrayBlocks)
-        {
-            if (block.MaxCoordinate.X >= _size.X) throw new ArgumentException("block must be inside grid");
-            if (block.MaxCoordinate.Y >= _size.Y) throw new ArgumentException("block must be inside grid");
-            Blocks.Add(block);
-        }
+        foreach (var block in arrayBlocks) AddBlock(block);
+
         if (exitCoordinate.X < 0) throw new ArgumentOutOfRangeException(nameof(size));
         if (exitCoordinate.Y < 0) throw new ArgumentOutOfRangeException(nameof(size));
         if (exitCoordinate.X >= _size.X) throw new ArgumentOutOfRangeException(nameof(size));
@@ -31,22 +27,27 @@ public record Grid
 
     }
 
+    public void AddBlock(Block block)
+    {
+        if (block.MaxCoordinate.X >= _size.X) throw new ArgumentException("block must be inside grid");
+        if (block.MaxCoordinate.Y >= _size.Y) throw new ArgumentException("block must be inside grid");
+        Blocks.Add(block);
+        if (Blocks.Count == 1) SetEscapeCoordinate();
+    }
+
     public Grid(GridSize size, IEnumerable<Block> blocks)
     {
         _size = size;
         Blocks = new List<Block>();
         var arrayBlocks = blocks.ToArray();
-        if (arrayBlocks.Length == 0) throw new ArgumentException("blocks can't be empty");
         if (_size == GridSize.Null) throw new ArgumentException("size can't be (0,0)");
+        foreach (var block in arrayBlocks) AddBlock(block);
+    }
 
-        foreach (var block in arrayBlocks)
-        {
-            if (block.MaxCoordinate.X >= _size.X) throw new ArgumentException("block must be inside grid");
-            if (block.MaxCoordinate.Y >= _size.Y) throw new ArgumentException("block must be inside grid");
-            Blocks.Add(block);
-        }
-
-        ExitCoordinate = BlockToEscape.Orientation == Orientation.Horizontal ? Coordinate.From(_size.X - 1, BlockToEscape.Coordinate.Y) : Coordinate.From(BlockToEscape.Coordinate.X, _size.Y - 1);
+    public void ChangeSize(GridSize size)
+    {
+        _size = size;
+        if (Blocks.Count > 0) SetEscapeCoordinate();
     }
 
     public bool CanBlockMove(int blockIndex, Direction direction) =>
@@ -56,6 +57,42 @@ public record Grid
             Direction.Increase => CanBlockIncrease(blockIndex),
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
+
+    
+
+    public bool IsEmpty() => _size == new GridSize(0, 0);
+
+    public Grid MoveBlock(int blockIndex, Direction direction)
+    {
+        if (CanBlockMove(blockIndex, direction) is false) return Empty();
+        var blocks = Blocks.Select(block => new Block(block.Length, block.Orientation, block.Coordinate)).ToList();
+        var grid = new Grid(_size, blocks);
+        grid.Blocks[blockIndex].Move(direction);
+        return grid;
+    }
+
+    public bool HasReachedExit() => Blocks[0].HasCoordinate(ExitCoordinate);
+
+
+    public bool IsIn(List<Grid> allGrids)
+    {
+        foreach (var grid in allGrids)
+        {
+            var isIn = true;
+            // ReSharper disable once LoopCanBeConvertedToQuery because this version approximately 2x faster than Linq
+            for (var i = 0; i < grid.Blocks.Count; i++)
+            {
+                if (grid.Blocks[i].Coordinate == Blocks[i].Coordinate) continue;
+                isIn = false;
+                break;
+            }
+            if (isIn) return true;
+        }
+
+        return false;
+    }
+
+    public bool IsInLinq(IEnumerable<Grid> allGrids) => allGrids.Select(grid => !grid.Blocks.Where((t, i) => t.Coordinate != Blocks[i].Coordinate).Any()).Any(isIn => isIn);
 
     private bool CanBlockIncrease(int blockIndex)
     {
@@ -97,41 +134,12 @@ public record Grid
         return true;
     }
 
-    public bool IsEmpty() => _size == new GridSize(0, 0);
-
-    public void AddBlock(Block block) => Blocks.Add(block);
-
-    public Grid MoveBlock(int blockIndex, Direction direction)
+    private void SetEscapeCoordinate()
     {
-        if (CanBlockMove(blockIndex, direction) is false) return Empty();
-        var blocks = Blocks.Select(block => new Block(block.Length, block.Orientation, block.Coordinate)).ToList();
-        var grid = new Grid(_size, ExitCoordinate, blocks);
-        grid.Blocks[blockIndex].Move(direction);
-        return grid;
+        ExitCoordinate = BlockToEscape.Orientation == Orientation.Horizontal
+            ? Coordinate.From(_size.X - 1, BlockToEscape.Coordinate.Y)
+            : Coordinate.From(BlockToEscape.Coordinate.X, _size.Y - 1);
     }
-
-    public bool HasReachedExit() => Blocks[0].HasCoordinate(ExitCoordinate);
-
-
-    public bool IsIn(List<Grid> allGrids)
-    {
-        foreach (var grid in allGrids)
-        {
-            var isIn = true;
-            // ReSharper disable once LoopCanBeConvertedToQuery because this version approximately 2x faster than Linq
-            for (var i = 0; i < grid.Blocks.Count; i++)
-            {
-                if (grid.Blocks[i].Coordinate == Blocks[i].Coordinate) continue;
-                isIn = false;
-                break;
-            }
-            if (isIn) return true;
-        }
-
-        return false;
-    }
-
-    public bool IsInLinq(IEnumerable<Grid> allGrids) => allGrids.Select(grid => !grid.Blocks.Where((t, i) => t.Coordinate != Blocks[i].Coordinate).Any()).Any(isIn => isIn);
 
     private static Grid Empty() => new(new GridSize(0, 0), Coordinate.From(0, 0), new List<Block>());
 }

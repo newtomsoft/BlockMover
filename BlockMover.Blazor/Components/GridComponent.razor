@@ -1,0 +1,38 @@
+﻿@using BlockMover.Domain
+<table class="grid">
+    @for (var y = 0; y < Size; y++)
+    {
+        <tr>
+            @for (var x = 0; x < Size; x++)
+            {
+                var freeOrBlock = "free";
+                if (Grid.Blocks.Count > 0 && Grid.Blocks[0].HasCoordinate(Coordinate.From(x, y)))
+                {
+                    freeOrBlock = "block_to_escape";
+                }
+                else
+                {
+                    foreach (var block in Grid.Blocks)
+                    {
+                        if (block.HasCoordinate(Coordinate.From(x, y)))
+                        {
+                            freeOrBlock = "block";
+                            break;
+                        }
+                    }
+                }
+                <td id="g@(x)_@(y)" class="@freeOrBlock"></td>
+            }
+        </tr>
+    }
+</table>
+
+@code {
+
+    [Parameter]
+    public int Size { get; set; }
+
+    [Parameter]
+    public Grid Grid { get; set; }
+
+}
