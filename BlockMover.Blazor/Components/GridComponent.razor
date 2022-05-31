@@ -5,21 +5,18 @@
         <tr>
             @for (var x = 0; x < Size; x++)
             {
-                var freeOrBlock = "free";
+                string freeOrBlock;
                 if (Grid.Blocks.Count > 0 && Grid.Blocks[0].HasCoordinate(Coordinate.From(x, y)))
                 {
                     freeOrBlock = "block_to_escape";
                 }
+                else if (Grid.Blocks.Any(block => block.HasCoordinate(Coordinate.From(x, y))))
+                {
+                    freeOrBlock = "block";
+                }
                 else
                 {
-                    foreach (var block in Grid.Blocks)
-                    {
-                        if (block.HasCoordinate(Coordinate.From(x, y)))
-                        {
-                            freeOrBlock = "block";
-                            break;
-                        }
-                    }
+                    freeOrBlock = "free";
                 }
                 <td id="g@(x)_@(y)" class="@freeOrBlock"></td>
             }
