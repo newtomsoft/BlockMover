@@ -9,7 +9,7 @@ public class SingleBlockMoveTest
         var grid = new Grid(new GridSize(3, 3), new List<Block> { block });
         grid.CanBlockMove(0, Direction.Decrease).ShouldBeTrue();
         block.Move(Direction.Decrease);
-        block.Coordinate.ShouldBe(Coordinate.From(0, 0));
+        block.MinCoordinate.ShouldBe(Coordinate.From(0, 0));
     }
 
     [Fact]
@@ -27,7 +27,7 @@ public class SingleBlockMoveTest
         var grid = new Grid(new GridSize(3, 3), new List<Block> { block });
         grid.CanBlockMove(0, Direction.Decrease).ShouldBeTrue();
         block.Move(Direction.Decrease);
-        block.Coordinate.ShouldBe(Coordinate.From(0, 0));
+        block.MinCoordinate.ShouldBe(Coordinate.From(0, 0));
     }
 
     [Fact]
@@ -45,7 +45,7 @@ public class SingleBlockMoveTest
         var grid = new Grid(new GridSize(3, 3), new List<Block> { block });
         grid.CanBlockMove(0, Direction.Increase).ShouldBeTrue();
         block.Move(Direction.Increase);
-        block.Coordinate.ShouldBe(Coordinate.From(1, 0));
+        block.MinCoordinate.ShouldBe(Coordinate.From(1, 0));
     }
 
     [Fact]
@@ -63,7 +63,7 @@ public class SingleBlockMoveTest
         var grid = new Grid(new GridSize(3, 3), new List<Block> { block });
         grid.CanBlockMove(0, Direction.Increase).ShouldBeTrue();
         block.Move(Direction.Increase);
-        block.Coordinate.ShouldBe(Coordinate.From(0, 1));
+        block.MinCoordinate.ShouldBe(Coordinate.From(0, 1));
     }
 
     [Fact]

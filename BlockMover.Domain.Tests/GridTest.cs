@@ -8,7 +8,7 @@ public class GridTest
     public void NewGridShouldNotThrowWithHorizontalBlock()
     {
         var block0 = new Block(2, Orientation.Horizontal, Coordinate.From(2, 2));
-       
+
         Should.NotThrow(() =>
         {
             _ = new Grid(new GridSize(4, 4), new List<Block> { block0 });

@@ -1,0 +1,13 @@
+﻿@page "/escape_block"
+
+
+<PageTitle>Block</PageTitle>
+
+
+<input type="number" @bind="Size" />
+
+<GridComponent Size="Size" Grid="_grid" MakeBlock="MakeBlock"></GridComponent>
+
+<button @onclick="ComputeWay">Compute way</button>
+<input @bind="Way" />
+

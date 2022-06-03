@@ -1,6 +1,4 @@
-﻿using BlockMover.Domain;
-
-namespace BlockMover.Blazor.Models;
+﻿namespace BlockMover.Blazor.Models;
 
 public class BlockModel
 {

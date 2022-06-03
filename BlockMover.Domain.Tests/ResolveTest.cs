@@ -20,14 +20,14 @@ public class ResolveTest
         gridAfterB2Increase.Blocks[1].ShouldBe(grid.Blocks[1]);
         gridAfterB2Increase.Blocks[2].Orientation.ShouldBe(grid.Blocks[2].Orientation);
         gridAfterB2Increase.Blocks[2].Length.ShouldBe(grid.Blocks[2].Length);
-        gridAfterB2Increase.Blocks[2].Coordinate.ShouldBe(Coordinate.From(2, 2));
+        gridAfterB2Increase.Blocks[2].MinCoordinate.ShouldBe(Coordinate.From(2, 2));
 
         var gridAfterB2Decrease = grid.MoveBlock(2, Direction.Decrease);
         gridAfterB2Decrease.Blocks[0].ShouldBe(grid.Blocks[0]);
         gridAfterB2Decrease.Blocks[1].ShouldBe(grid.Blocks[1]);
         gridAfterB2Decrease.Blocks[2].Orientation.ShouldBe(grid.Blocks[2].Orientation);
         gridAfterB2Decrease.Blocks[2].Length.ShouldBe(grid.Blocks[2].Length);
-        gridAfterB2Decrease.Blocks[2].Coordinate.ShouldBe(Coordinate.From(0, 2));
+        gridAfterB2Decrease.Blocks[2].MinCoordinate.ShouldBe(Coordinate.From(0, 2));
     }
 
     [Fact]

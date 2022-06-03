@@ -58,14 +58,14 @@ public record Grid
             _ => throw new ArgumentOutOfRangeException(nameof(direction), direction, null)
         };
 
-    
+
 
     public bool IsEmpty() => _size == new GridSize(0, 0);
 
     public Grid MoveBlock(int blockIndex, Direction direction)
     {
         if (CanBlockMove(blockIndex, direction) is false) return Empty();
-        var blocks = Blocks.Select(block => new Block(block.Length, block.Orientation, block.Coordinate)).ToList();
+        var blocks = Blocks.Select(block => new Block(block.Length, block.Orientation, block.MinCoordinate)).ToList();
         var grid = new Grid(_size, blocks);
         grid.Blocks[blockIndex].Move(direction);
         return grid;
@@ -82,7 +82,7 @@ public record Grid
             // ReSharper disable once LoopCanBeConvertedToQuery because this version approximately 2x faster than Linq
             for (var i = 0; i < grid.Blocks.Count; i++)
             {
-                if (grid.Blocks[i].Coordinate == Blocks[i].Coordinate) continue;
+                if (grid.Blocks[i].MinCoordinate == Blocks[i].MinCoordinate) continue;
                 isIn = false;
                 break;
             }
@@ -92,7 +92,7 @@ public record Grid
         return false;
     }
 
-    public bool IsInLinq(IEnumerable<Grid> allGrids) => allGrids.Select(grid => !grid.Blocks.Where((t, i) => t.Coordinate != Blocks[i].Coordinate).Any()).Any(isIn => isIn);
+    public bool IsInLinq(IEnumerable<Grid> allGrids) => allGrids.Select(grid => !grid.Blocks.Where((t, i) => t.MinCoordinate != Blocks[i].MinCoordinate).Any()).Any(isIn => isIn);
 
     private bool CanBlockIncrease(int blockIndex)
     {
@@ -100,12 +100,12 @@ public record Grid
         switch (blockToTest.Orientation)
         {
             case Orientation.Horizontal:
-                if (blockToTest.Coordinate.X + blockToTest.Length >= _size.X) return false;
-                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.Coordinate.X + blockToTest.Length, blockToTest.Coordinate.Y)))) return false;
+                if (blockToTest.MinCoordinate.X + blockToTest.Length >= _size.X) return false;
+                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.MinCoordinate.X + blockToTest.Length, blockToTest.MinCoordinate.Y)))) return false;
                 break;
             case Orientation.Vertical:
-                if (blockToTest.Coordinate.Y + blockToTest.Length >= _size.Y) return false;
-                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.Coordinate.X, blockToTest.Coordinate.Y + blockToTest.Length)))) return false;
+                if (blockToTest.MinCoordinate.Y + blockToTest.Length >= _size.Y) return false;
+                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.MinCoordinate.X, blockToTest.MinCoordinate.Y + blockToTest.Length)))) return false;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -120,12 +120,12 @@ public record Grid
         switch (blockToTest.Orientation)
         {
             case Orientation.Horizontal:
-                if (blockToTest.Coordinate.X == 0) return false;
-                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.Coordinate.X - 1, blockToTest.Coordinate.Y)))) return false;
+                if (blockToTest.MinCoordinate.X == 0) return false;
+                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.MinCoordinate.X - 1, blockToTest.MinCoordinate.Y)))) return false;
                 break;
             case Orientation.Vertical:
-                if (blockToTest.Coordinate.Y == 0) return false;
-                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.Coordinate.X, blockToTest.Coordinate.Y - 1)))) return false;
+                if (blockToTest.MinCoordinate.Y == 0) return false;
+                if (Blocks.Any(block => block.HasCoordinate(Coordinate.From(blockToTest.MinCoordinate.X, blockToTest.MinCoordinate.Y - 1)))) return false;
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -137,8 +137,8 @@ public record Grid
     private void SetEscapeCoordinate()
     {
         ExitCoordinate = BlockToEscape.Orientation == Orientation.Horizontal
-            ? Coordinate.From(_size.X - 1, BlockToEscape.Coordinate.Y)
-            : Coordinate.From(BlockToEscape.Coordinate.X, _size.Y - 1);
+            ? Coordinate.From(_size.X - 1, BlockToEscape.MinCoordinate.Y)
+            : Coordinate.From(BlockToEscape.MinCoordinate.X, _size.Y - 1);
     }
 
     private static Grid Empty() => new(new GridSize(0, 0), Coordinate.From(0, 0), new List<Block>());

@@ -16,3 +16,64 @@ td {
 .free {
     background-color: beige;
 }
+
+.border_top_escape {
+    border-top: solid 2px sienna;
+}
+
+.border_bottom_escape {
+    border-bottom: solid 2px sienna;
+}
+
+.border_left_escape {
+    border-left: solid 2px sienna;
+}
+
+.border_right_escape {
+    border-right: solid 2px sienna;
+}
+
+.no_border_top_escape {
+    border-top: solid 1px red;
+}
+
+.no_border_bottom_escape {
+    border-bottom: solid 1px red;
+}
+
+.no_border_left_escape {
+    border-left: solid 1px red;
+}
+
+.no_border_right_escape {
+    border-right: solid 1px red;
+}
+
+.border_top {
+    border-top: solid 2px sienna;
+}
+.border_bottom {
+    border-bottom: solid 2px sienna;
+}
+.border_left {
+    border-left: solid 2px sienna;
+}
+.border_right {
+    border-right: solid 2px sienna;
+}
+
+.no_border_top {
+    border-top: solid 1px burlywood;
+}
+
+.no_border_bottom {
+    border-bottom: solid 1px burlywood;
+}
+
+.no_border_left {
+    border-left: solid 1px burlywood;
+}
+
+.no_border_right {
+    border-right: solid 1px burlywood;
+}
