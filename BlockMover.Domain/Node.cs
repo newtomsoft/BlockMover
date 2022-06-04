@@ -32,15 +32,15 @@ public class Node
         for (var blockIndex = 0; blockIndex < node.Grid.Blocks.Count; blockIndex++)
             foreach (Direction direction in Enum.GetValues(typeof(Direction)))
             {
-                var oppositeMove = new Move(blockIndex, node.Grid.Blocks[blockIndex], Opposite(direction));
+                var oppositeMove = new Move(blockIndex, Opposite(direction));
                 if (node.FromMove == oppositeMove) continue;
                 var parentNode = node;
                 while (true)
                 {
                     var newGrid = parentNode.Grid.MoveBlock(blockIndex, direction);
                     if (newGrid.IsEmpty()) break;
-                    var childNode = new Node(parentNode, newGrid, new Move(blockIndex, node.Grid.Blocks[blockIndex], direction));
-                    var listMove = new List<Move>(parentNode.Moves) { new(blockIndex, node.Grid.Blocks[blockIndex], direction) };
+                    var childNode = new Node(parentNode, newGrid, new Move(blockIndex, direction));
+                    var listMove = new List<Move>(parentNode.Moves) { new(blockIndex, direction) };
                     children.TryAdd(listMove, childNode);
                     parentNode = childNode;
                 }
@@ -75,6 +75,12 @@ public class Node
         }
 
         return null;
+    }
+
+    public IEnumerable<Move> GetMovesToEscape()
+    {
+        var exitNode = ComputeChildren();
+        return exitNode is null ? new List<Move>() : exitNode.Moves;
     }
 
     public string GetStringWayToExit()
