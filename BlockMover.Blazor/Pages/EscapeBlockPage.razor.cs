@@ -27,7 +27,7 @@ public partial class EscapeBlockPage : ComponentBase
         return base.OnInitializedAsync();
     }
 
-    private void MakeBlock(int x1, int y1, int x2, int y2)
+    private void MakeBlocks(int x1, int y1, int x2, int y2)
     {
         var diffX = x2 - x1;
         var diffY = y2 - y1;

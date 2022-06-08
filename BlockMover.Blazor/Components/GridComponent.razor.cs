@@ -2,7 +2,7 @@
 
 public partial class GridComponent
 {
-    [Parameter] public Action<int, int, int, int> MakeBlock { get; set; } = default!;
+    [Parameter] public Action<int, int, int, int> MakeBlocks { get; set; } = default!;
     [Parameter] public int Size { get; set; }
     [Parameter] public Grid Grid { get; set; } = default!;
 
@@ -15,7 +15,7 @@ public partial class GridComponent
         _dragStartY = y;
     }
 
-    private void OnMouseUp(int x, int y) => MakeBlock(_dragStartX, _dragStartY, x, y);
+    private void OnMouseUp(int x, int y) => MakeBlocks(_dragStartX, _dragStartY, x, y);
 
     private (string freeOrBlock, string borders) GetClasses(Block? block, Coordinate coordinate)
     {
