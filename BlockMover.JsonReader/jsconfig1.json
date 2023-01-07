@@ -1,9 +1,8 @@
 {
   "Grid": {
 
-  } 
-
-
+  }, 
+  
   "exclude": [
     "**/bin",
     "**/bower_components",

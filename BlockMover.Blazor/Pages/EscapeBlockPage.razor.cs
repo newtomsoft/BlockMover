@@ -60,7 +60,7 @@ public partial class EscapeBlockPage : ComponentBase
         var moves = node.GetMovesToEscape();
         NextMoves = new Stack<Move>(moves.Reverse());
         PreviousMoves = new Stack<Move>();
-        _disabledNavigatesNextMoves = false;
+        if (NextMoves.Count != 0) _disabledNavigatesNextMoves = false;
     }
 
     private void MoveBlock(int blockIndex, Direction direction) => _grid = _grid.MoveBlock(blockIndex, direction);

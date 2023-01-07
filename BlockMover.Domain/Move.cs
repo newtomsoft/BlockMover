@@ -4,5 +4,5 @@ public record Move(int BlockId, Direction Direction)
 {
     public override string ToString() => "b" + BlockId + Direction.ToDisplay();
 
-    public Move Invert() => new(BlockId, Direction == Direction.Decrease ? Direction.Increase : Direction.Decrease);
+    public Move Invert() => this with {Direction = Direction == Direction.Decrease ? Direction.Increase : Direction.Decrease};
 }
