@@ -12,7 +12,7 @@ exemple with this image
 
 <img src="./BlockMover.Console/example.png" width="600" />
 
-b6- : ⬅️
+b6- : ⬆️
 
 b11--- : ⬆️⬆️⬆️
 
