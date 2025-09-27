@@ -1,0 +1,18 @@
+﻿@using System.Drawing
+@using BlockMover.Domain
+<table class="grid">
+    @for (var y = 0; y < Size; y++)
+    {
+        <tr>
+            @for (var x = 0; x < Size; x++)
+            {
+                var coordinate = Coordinate.From(x, y);
+                var block = Grid.Blocks.FirstOrDefault(block => block.HasCoordinate(coordinate));
+                var (freeOrBlock, borders) = GetClasses(block, coordinate);
+                var currentX = x;
+                var currentY = y;
+                <td id="g@(currentX)_@(currentY)" class="@freeOrBlock @borders" @onmousedown="() => OnMouseDown(currentX, currentY)" @onmouseup="() => OnMouseUp(currentX, currentY)"></td>
+            }
+        </tr>
+    }
+</table>

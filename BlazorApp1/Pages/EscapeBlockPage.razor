@@ -1,0 +1,14 @@
+﻿@page "/escape_block"
+@using System.Runtime.CompilerServices
+
+
+<PageTitle>Block</PageTitle>
+
+
+<input type="number" @bind="Size" />
+
+<GridComponent Size="Size" Grid="_grid" MakeBlocks="MakeBlocks"></GridComponent>
+
+<button @onclick="ComputeWay">Compute way</button>
+<button disabled="@_disabledNavigatesPreviousMoves" @onclick="ShowPreviousMove">&#60;</button>
+<button disabled="@_disabledNavigatesNextMoves" @onclick="ShowNextMove">></button>

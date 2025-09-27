@@ -1,10 +1,13 @@
-﻿namespace BlockMover.Blazor.Components;
+﻿using BlockMover.Domain;
+using Microsoft.AspNetCore.Components;
+
+namespace BlockMover.Blazor.Components;
 
 public partial class GridComponent
 {
-    [Parameter] public Action<int, int, int, int> MakeBlocks { get; set; } = null!;
+    [Parameter] public Action<int, int, int, int> MakeBlocks { get; set; } = default!;
     [Parameter] public int Size { get; set; }
-    [Parameter] public Grid Grid { get; set; } = null!;
+    [Parameter] public Grid Grid { get; set; } = default!;
 
     private int _dragStartX;
     private int _dragStartY;

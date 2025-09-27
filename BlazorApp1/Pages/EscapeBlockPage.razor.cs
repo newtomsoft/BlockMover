@@ -1,4 +1,7 @@
-﻿namespace BlockMover.Blazor.Pages;
+﻿using BlockMover.Domain;
+using Microsoft.AspNetCore.Components;
+
+namespace BlockMover.Blazor.Components;
 
 public partial class EscapeBlockPage : ComponentBase
 {
@@ -38,7 +41,7 @@ public partial class EscapeBlockPage : ComponentBase
 
         int length;
         Coordinate startCoordinate;
-        if (orientation == Orientation.Horizontal)
+        if (diffX != 0)
         {
             length = Math.Abs(diffX) + 1;
             startCoordinate = diffX > 0 ? Coordinate.From(x1, y1) : Coordinate.From(x2, y2);
