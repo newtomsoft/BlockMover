@@ -7,8 +7,8 @@
 
 <input type="number" @bind="Size" />
 
-<GridComponent Size="Size" Grid="_grid" MakeBlocks="MakeBlocks"></GridComponent>
+<GridComponent Size="Size" Grid="_grid"></GridComponent>
 
-<button @onclick="ComputeWay">Compute way</button>
+<button @onclick="Generate">Generate</button>
 <button disabled="@_disabledNavigatesPreviousMoves" @onclick="ShowPreviousMove">&#60;</button>
 <button disabled="@_disabledNavigatesNextMoves" @onclick="ShowNextMove">></button>

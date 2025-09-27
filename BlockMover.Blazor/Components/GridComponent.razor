@@ -9,7 +9,7 @@
                 var (freeOrBlock, borders) = GetClasses(block, coordinate);
                 var currentX = x;
                 var currentY = y;
-                <td id="g@(currentX)_@(currentY)" class="@freeOrBlock @borders" @onmousedown="() => OnMouseDown(currentX, currentY)" @onmouseup="() => OnMouseUp(currentX, currentY)"></td>
+                <td id="g@(currentX)_@(currentY)" class="@freeOrBlock @borders"></td>
             }
         </tr>
     }

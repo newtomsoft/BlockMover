@@ -23,44 +23,17 @@ public partial class EscapeBlockPage : ComponentBase
 
     protected override Task OnInitializedAsync()
     {
-        _grid = new Grid(new GridSize(Size, Size), new List<Block>());
+        Generate();
         return base.OnInitializedAsync();
     }
 
-    private void MakeBlocks(int x1, int y1, int x2, int y2)
+    private void Generate()
     {
-        var diffX = x2 - x1;
-        var diffY = y2 - y1;
-        if (diffX != 0 && diffY != 0) return;
-        if (diffX == 0 && diffY == 0) return;
-
-        var orientation = diffX != 0 ? Orientation.Horizontal : Orientation.Vertical;
-
-        int length;
-        Coordinate startCoordinate;
-        if (diffX != 0)
-        {
-            length = Math.Abs(diffX) + 1;
-            startCoordinate = diffX > 0 ? Coordinate.From(x1, y1) : Coordinate.From(x2, y2);
-        }
-        else
-        {
-            length = Math.Abs(diffY) + 1;
-            startCoordinate = diffY > 0 ? Coordinate.From(x1, y1) : Coordinate.From(x2, y2);
-        }
-
-        _grid.AddBlock(new Block(length, orientation, startCoordinate));
-    }
-
-    private void ComputeWay()
-    {
-        _disabledNavigatesPreviousMoves = true;
-        _disabledNavigatesNextMoves = true;
-        var node = new Node(_grid);
-        var moves = node.GetMovesToEscape();
-        NextMoves = new Stack<Move>(moves.Reverse());
+        var (grid, solution) = GridFactory.Create(20);
+        _grid = grid;
+        NextMoves = new Stack<Move>(solution.Reverse().Select(m => m.Invert()));
         PreviousMoves = new Stack<Move>();
-        if (NextMoves.Count != 0) _disabledNavigatesNextMoves = false;
+        _disabledNavigatesNextMoves = false;
     }
 
     private void MoveBlock(int blockIndex, Direction direction) => _grid = _grid.MoveBlock(blockIndex, direction);
